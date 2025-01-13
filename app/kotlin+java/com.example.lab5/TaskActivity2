@@ -1,0 +1,66 @@
+package com.example.lab5
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+
+
+class TaskActivity2 : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_task2)
+
+        // Отримуємо посилання на поля введення
+        val enterzPerA: EditText = findViewById(R.id.field1)
+        val enterzPerP: EditText = findViewById(R.id.field2)
+
+        val calculate_button: Button = findViewById(R.id.calcButton)
+        val back_Button: Button = findViewById(R.id.backButton)
+
+        // Створюємо обробку натискання на кнопку розрахунку
+        calculate_button.setOnClickListener{
+            try {
+                //Отримуємо уведені значення та переводимо в тип Double
+                val zPerA = enterzPerA.text.toString().toDouble()
+                val zPerP = enterzPerP.text.toString().toDouble()
+
+                //Проводимо обчислення по формулам
+                val w = 0.01
+                val tV = 0.045
+                val Pm = 5120
+                val Tm = 6451
+                val kP = 0.004
+
+                val MWnedA = w * tV * Pm * Tm
+                val MWnedP = kP * Pm * Tm
+                val MzPer = zPerA * MWnedA + zPerP * MWnedP
+
+                //Передаємо результати до активності виводу
+                val output = "Математичне сподівання аварійного недовідпущення " +
+                        "електроенергії становить: " +"%.2f".format(MWnedA).toDouble() + "кВт*год\n\n" +
+                        "Математичне сподівання планового недовідпущення" +
+                        " електроенергії становить: " + "%.2f".format(MWnedP).toDouble() + " кВт*год\n\n" +
+                        "Математичне сподівання збитків від переривання" +
+                        " електропостачання: " + "%.2f".format(MzPer).toDouble() + " грн\n\n"
+
+                intent = Intent(this, ResultActivity::class.java)
+                intent.putExtra("output", output)
+                startActivity(intent)
+
+            }catch (e: NumberFormatException){
+                Toast.makeText(this, "Не числові значення", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        // Створюємо обробку натискання на кнопку повернення
+        back_Button.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+}
