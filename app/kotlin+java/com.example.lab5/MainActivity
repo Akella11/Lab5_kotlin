@@ -1,0 +1,30 @@
+package com.example.lab5
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+
+        // Отримуємо посилання на кнопки
+        val task1Button: Button = findViewById(R.id.button1)
+        val task2Button: Button = findViewById(R.id.button2)
+
+        // Створюємо обробку натискання на кожну з кнопок
+        task1Button.setOnClickListener{
+            intent = Intent(this, TaskActivity1::class.java)
+            startActivity(intent)
+        }
+        task2Button.setOnClickListener{
+            intent = Intent(this, TaskActivity2::class.java)
+            startActivity(intent)
+        }
+    }
+}
